@@ -1,0 +1,40 @@
+.menu-icon {
+	display: inline-block;
+}
+.fa,
+.fas,
+.fab {
+	font-size: 20px;
+	margin-right: 3px;
+}
+
+.dashicons {
+	font-size: inherit;
+	vertical-align: top;
+	text-decoration: none;
+	margin-right: 2px;
+}
+
+.material-icon-size {
+	display: inline-block;
+	line-height: 1;
+	font-weight: 400;
+	font-style: normal;
+	text-transform: none;
+	text-rendering: auto;
+	text-align: center;
+	vertical-align: top;
+	text-decoration: none;
+	-webkit-font-smoothing: antialiased;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+
+	font-size: 21px;
+}
+
+.sub-menu .material-icon-size {
+	vertical-align: bottom;
+}
+
+/* font-family: dashicons; */
