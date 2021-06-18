@@ -1,85 +1,58 @@
 <?php
+
 /**
- * Custom Menu Icons
+ * Plugin Name: Custom Menu Icons
+ * Description: Add icons from Font Awesome, Material Design and Dashicons to your menu items EASILY!
+ * Version: 1.0.0
+ * Author: Sandip Mondal
  *
- * @package           PluginPackage
- * @author            Your Name
- * @copyright         2021 SandipMondal
- * @license           GPL-2.0-or-later
- *
- * @wordpress-plugin
- * Plugin Name:       Menu Icons
- * Plugin URI:        
- * Description:       Add Custom Icons to Your Menu EASILY.
- * Version:           1.0.0
- * Author:            Sandip Mondal
- * Author URI:        
- * Text Domain:       menu-icons
- * License:           GPL v2 or later
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * @author Sandip Mondal
+ * @version 1.0.0
  */
 
 if(!defined("ABSPATH")) : exit(); endif;
 
-
-// Activation and Deactivation Hooks
-
-register_activation_hook( __FILE__, "activate_menu_icons" );
-
-function activate_custom_menu_icons(){
-    flush_rewrite_rules();
-}
-
-register_deactivation_hook( __FILE__, "deactivate_menu_icons" );
-
-function deactivate_custom_menu_icons(){
-    flush_rewrite_rules();
-}
-
-
 // Define Constants
 
-define("MI_PATH", trailingslashit( plugin_dir_path(__FILE__) ));
-define("MI_URL", trailingslashit( plugins_url("/", __FILE__) ));
-
+define("SANDIP_CUSTOM_MI_PATH", trailingslashit( plugin_dir_path(__FILE__) ));
+define("SANDIP_CUSTOM_MI_URL", trailingslashit( plugins_url("/", __FILE__) ));
 
 // Enqueue Admin Scripts and Styles
 
-add_action( "admin_enqueue_scripts", "enqueue_admin_menu_icons_scripts" );
+add_action( "admin_enqueue_scripts", "sandip_custom_menu_icons_enqueue_admin_menu_icons_scripts" );
 
-function enqueue_admin_menu_icons_scripts($hook){
+function sandip_custom_menu_icons_enqueue_admin_menu_icons_scripts($hook){
 
     if($hook !== "nav-menus.php"){
         return;
     }
     wp_enqueue_style( "admin-menuicon-materialicons", "https://fonts.googleapis.com/icon?family=Material+Icons" );
     wp_enqueue_style( "admin-menuicon-fontawesome", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" );
-    wp_enqueue_style( "menuiconadminstyles", MI_URL."css/menustyles.css", array("admin-menuicon-materialicons","admin-menuicon-fontawesome"), 1.0);
+    wp_enqueue_style( "menuiconadminstyles", SANDIP_CUSTOM_MI_URL."css/menustyles.css", array("admin-menuicon-materialicons","admin-menuicon-fontawesome"), 1.0);
 
     wp_enqueue_script("jquery");
-    wp_enqueue_script( "menuiconsalliconscript", MI_URL."js/allicons.js", array(), 1.0, true );
-    wp_enqueue_script( "menuiconsadminscript", MI_URL."js/menuiconscript.js", array("menuiconsalliconscript", "jquery"), 1.0, true );
+    wp_enqueue_script( "menuiconsalliconscript", SANDIP_CUSTOM_MI_URL."js/allicons.js", array(), 1.0, true );
+    wp_enqueue_script( "menuiconsadminscript", SANDIP_CUSTOM_MI_URL."js/menuiconscript.js", array("menuiconsalliconscript", "jquery"), 1.0, true );
 
 }
 
 
 // Enqueue Front End Scripts and Styles
 
-add_action( "wp_enqueue_scripts", "enqueue_frontend_menu_icons_scripts" );
+add_action( "wp_enqueue_scripts", "sandip_custom_menu_icons_enqueue_frontend_menu_icons_scripts" );
 
-function enqueue_frontend_menu_icons_scripts(){
+function sandip_custom_menu_icons_enqueue_frontend_menu_icons_scripts(){
     wp_enqueue_style( "admin-menuicon-materialicons", "https://fonts.googleapis.com/icon?family=Material+Icons" );
     wp_enqueue_style( "front-menuicon-fontawesome", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" );
-    wp_enqueue_style( "menuiconfrontendstyles", MI_URL."css/menufrontendstyles.css", array(), 1.0);
+    wp_enqueue_style( "menuiconfrontendstyles", SANDIP_CUSTOM_MI_URL."css/menufrontendstyles.css", array(), 1.0);
 }
 
 
 // Adding Custom Menu Fields
 
+add_action( 'wp_nav_menu_item_custom_fields', 'sandip_custom_menu_icons_menu_icons_fields', 10, 2 );
 
-add_action( 'wp_nav_menu_item_custom_fields', 'menu_icons_fields', 10, 2 );
-
-function menu_icons_fields($item_id, $item){
+function sandip_custom_menu_icons_menu_icons_fields($item_id, $item){
     ?>
    <?php
         wp_nonce_field( "mi_nonce", "_mi_meta_nonce_$item_id" );
@@ -113,22 +86,21 @@ function menu_icons_fields($item_id, $item){
     <!-- Custom Menu Fields Start -->
         
     <div class="menu-icon-field-wrapper">
-   
-            <div class="menu-icon-field-conatiner menu-icon-field-container-<?php echo $item_id ?>">
-                    <input type="hidden" name="_menu_icon_icon_name[<?php echo $item_id; ?>]"
-                    id="_menu_icon_icon_name-<?php echo $item_id; ?>" value= "<?php echo isset($icon_name) ? $icon_name : ""; ?>" >
+            <div class="menu-icon-field-conatiner menu-icon-field-container-<?php echo esc_attr(  $item_id  )?>">
+                    <input type="hidden" name="_menu_icon_icon_name[<?php echo esc_attr(  $item_id  ) ?>]"
+                    id="_menu_icon_icon_name-<?php  echo esc_attr(  $item_id  ) ?>" value= "<?php echo isset($icon_name) ?  esc_attr( $icon_name )  :  ""; ?>" >
 
-                    <input type="hidden" name="_menu_icon_icon_library[<?php echo $item_id; ?>]"
-                    id="_menu_icon_icon_library-<?php echo $item_id; ?>" value= "<?php echo isset($icon_library) ? $icon_library : ""; ?>" >
+                    <input type="hidden" name="_menu_icon_icon_library[<?php echo esc_attr(  $item_id  ) ?>]"
+                    id="_menu_icon_icon_library-<?php  echo esc_attr(  $item_id  ) ?>" value= "<?php echo isset($icon_library) ? esc_attr( $icon_library )  : ""; ?>" >
 
                     <button class="menu-icon-start-btn" 
-                    data-itemid = "<?php echo $item_id ?>"
+                    data-itemid = "<?php  echo esc_attr(  $item_id  ) ?>"
                     >
                         <?php echo _e("Select Icon", 'menu-icons') ?> 
                     </button> 
 
-                    <div class="icon-preview icon-preview-<?php echo $item_id ?>"> 
-                        <?php echo $menuIconHTML ?>
+                    <div class="icon-preview icon-preview-<?php  echo esc_attr(  $item_id  ) ?>"> 
+                        <?php echo  $menuIconHTML  ?>
                     </div>
 
 
@@ -137,22 +109,22 @@ function menu_icons_fields($item_id, $item){
             <div class="menu-icons-details-input-container">
 
                         <div class="font-input-container">
-                            <label for="_menu_icon_font_size-<?php echo $item_id ;?>">
+                            <label for="_menu_icon_font_size-<?php  echo esc_attr(  $item_id  ) ;?>">
                                 <?php _e( 'Icon Size (pixels)', 'menu-icons'); ?>
                             </label>
 
-                            <input type="number" id="_menu_icon_font_size-<?php echo $item_id ;?>" class="menu-icon-size-input" step=".1" 
-                            name="_menu_icon_icon_name[font_size][<?php echo $item_id ;?>]" value="<?php echo isset($icon_font_size) && $icon_font_size !=="" ? $icon_font_size : 22; ?>" />
+                            <input type="number" id="_menu_icon_font_size-<?php  echo esc_attr(  $item_id  ) ;?>" class="menu-icon-size-input" step=".1" 
+                            name="_menu_icon_icon_name[font_size][<?php  echo esc_attr(  $item_id  ) ;?>]" value="<?php echo isset($icon_font_size) && $icon_font_size !=="" ? esc_attr( $icon_font_size )  : 22; ?>" />
                         </div>
 
                         <div class="font-input-container">
-                            <label for="_menu_icon_font_size-<?php echo $item_id ;?>">
+                            <label for="_menu_icon_font_size-<?php  echo esc_attr(  $item_id  ) ;?>">
                                 <?php _e( 'Icon Vertical Alignment', 'menu-icons'); ?>
                             </label>
 
                             <?php echo isset($icon_ver_align) && $icon_ver_align == "top" ? "selected" : "" ;?>
 
-                            <select class="menu-icon-select-field" name="_menu_icon_icon_name[vertical_align][<?php echo $item_id; ?>]" id="_menu_icon_vertical_align-<?php echo $item_id ;?>">
+                            <select class="menu-icon-select-field" name="_menu_icon_icon_name[vertical_align][<?php  echo esc_attr(  $item_id  ) ?>]" id="_menu_icon_vertical_align-<?php echo esc_attr(  $item_id  ) ;?>">
                                 
                                 <option value="top" 
                                     <?php echo isset($icon_ver_align) && $icon_ver_align == "top" ? "selected" : "" ;?> 
@@ -193,11 +165,12 @@ function menu_icons_fields($item_id, $item){
 }
 
 
+
 // Adding Menu Icon Modal in the Footer
 
-add_action("admin_footer-nav-menus.php", "insert_menu_icons_modal",10,2);
+add_action("admin_footer-nav-menus.php", "sandip_custom_menu_icons_insert_menu_icons_modal",10,2);
 
-function insert_menu_icons_modal(){
+function sandip_custom_menu_icons_insert_menu_icons_modal(){
     ?>
     <!-- Modal Starts Here-->
     <div class="menu-icons-modal-wrapper">
@@ -246,9 +219,9 @@ function insert_menu_icons_modal(){
 
 // Update the Custom Field on Save Menu
 
-add_action( 'wp_update_nav_menu_item', 'update_menu_icons', 10, 2 );
+add_action( 'wp_update_nav_menu_item', 'sandip_custom_menu_icons_update_menu_icons', 10, 2 );
 
-function update_menu_icons($menu_id, $menu_item_db_id){
+function sandip_custom_menu_icons_update_menu_icons($menu_id, $menu_item_db_id){
 
      // Verify this came from our screen and with proper authorization.
 	if ( ! isset( $_POST["_mi_meta_nonce_$menu_item_db_id"] ) || ! wp_verify_nonce( $_POST["_mi_meta_nonce_$menu_item_db_id"], 'mi_nonce' ) ) {
@@ -276,9 +249,9 @@ function update_menu_icons($menu_id, $menu_item_db_id){
 
 // Show the Menu Icon In Title (Website)
 
-add_filter("nav_menu_item_title", "admin_menu_icon_display", 10,2); 
+add_filter("nav_menu_item_title", "sandip_custom_menu_icons_admin_menu_icon_display", 10,2); 
 
-function admin_menu_icon_display($title, $item){
+function sandip_custom_menu_icons_admin_menu_icon_display($title, $item){
 
     // get the meta data of the nav_menu_item 
     if( is_object( $item ) && isset( $item->ID ) ) {
@@ -326,4 +299,4 @@ function admin_menu_icon_display($title, $item){
 
 }
 
-?>
+

@@ -78,7 +78,7 @@ jQuery(document).ready(function ($) {
 				let selectIconContainer = document.querySelector(
 					`.icon-container-${trimmedMetaIcon}`
 				);
-				console.log(trimmedMetaIcon);
+				//console.log(trimmedMetaIcon);
 				selectIconContainer.classList.add('selected');
 			}
 		});
@@ -150,7 +150,7 @@ jQuery(document).ready(function ($) {
 					break;
 			}
 
-			console.log(iconName);
+			//console.log(iconName);
 		});
 	});
 
