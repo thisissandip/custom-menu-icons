@@ -66,21 +66,6 @@ function sandip_custom_menu_icons_menu_icons_fields($item_id, $item){
         $icon_font_size = $menuiconInfo[2];
         $icon_ver_align = $menuiconInfo[3];
 
-
-        switch($icon_library){
-            case 'font-awesome-icon':
-                $menuIconHTML = '<i class="font-awesome-icon '.$icon_name.'"></i>';
-                break;
-            case 'material-icons':
-                $menuIconHTML = '<span class="material-icons material-icon-size" >'.$icon_name.'</span> ';
-                break;
-            case 'dashicons':
-                $menuIconHTML = '<i class="dashicons '.$icon_name.'"></i>';
-                break;
-            default:
-                break;
-        }
-       
     ?>
 
     <!-- Custom Menu Fields Start -->
@@ -100,7 +85,20 @@ function sandip_custom_menu_icons_menu_icons_fields($item_id, $item){
                     </button> 
 
                     <div class="icon-preview icon-preview-<?php  echo esc_attr(  $item_id  ) ?>"> 
-                        <?php echo  $menuIconHTML  ?>
+                        <?php         
+                        switch($icon_library){
+                            case 'font-awesome-icon':
+                                echo '<i class="font-awesome-icon '. esc_attr( $icon_name ) .'"></i>';
+                                break;
+                            case 'material-icons':
+                                echo '<span class="material-icons material-icon-size" >'. esc_attr( $icon_name ) .'</span> ';
+                                break;
+                            case 'dashicons':
+                                echo '<i class="dashicons '. esc_attr( $icon_name ).'"></i>';
+                                break;
+                            default:
+                                break;
+                        }  ?>
                     </div>
 
 
