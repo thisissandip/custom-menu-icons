@@ -1,3 +1,5 @@
+## Custom Menu Icons
+
 A WordPress plugin to add icons to your menu items EASILY!\
 Over 3000+ icons are available from Font Awesome, Material Design, and Dashicons.
 
